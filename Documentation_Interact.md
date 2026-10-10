@@ -405,46 +405,9 @@ More infamtion about the [Example_Interact.cs](Example_Interact.cs) can be found
    ***VII: OnTriggerStay() Method (Optional)***
 
 
-   [OnTriggerStay()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerStay.html) is not used in this script, but it could be implemented if continuous checks or updates were needed while the player remains within the trigger area.
-   That could be useful for more complex interaction scenarios, such as holding a button to charge an action or providing continuous feedback while the player is in range.
-   If you want to implement OnTriggerStay(), you can add the following method to the script:
-   ```charp
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Continuous checks or updates while the player is within the trigger area
-        }
-    }
-   ```
-   You can count the time the player is in the trigger area, and if the player is in the trigger area for a certain time,
-   you can call the Interact() method automatically. Or you can implement another method, like OnTriggerStayInteract(),
-   which is called when the player is in the trigger area for a certain time,
-   which can for example a DamageOverTimeInteract() method, or a HealOverTimeInteract() method, or any other method that is required for the game.
-   if another method is implemented, please use the same naming convention as the Interact() method,
-   like OnTriggerStayInteract(), to avoid confusion and for better understanding of the code and use another script, like Example_Interact.cs,
-   to implement the OnTriggerStayInteract() method. Please seperate the Interface for the OnTriggerStayInteract() method from the IInteractable interface
-   like
-   ```charp
-    public interface IInteractableStay 
-    {
-        void OnTriggerStayInteract();
-    }
-   ```
-   and write that between 
-   ```csharp
-   public interface IInteractable 
-    {
-    void Interact();           
-
-    }
-   ```
-   and 
-
-   ```csharp
-   public class Main_Interact : MonoBehaviour
-   ``` 
-   for cleaner code.
+   [OnTriggerStay()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerStay.html) is not used in this script, it is also not recommended anymore.
+   It is unneccesary and cost more CPU usage, you can modify the ``OnTriggerEnter()`` and the ``OnTriggerExit()`` with a boolean  and use an ``if`` statement
+   in the ``Update()``
 
 
    ***2. Overview of the Example_Interact.cs Script***
