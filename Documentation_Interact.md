@@ -179,15 +179,18 @@ It uses the [Input System](https://docs.unity3d.com/Packages/com.unity.inputsyst
 allowing it to define specific interaction behavior in the ``Interact()`` method. For more infomation about Interactable, 
 please check the second part of the script and the [Example_Interact.cs](Example_Interact.cs) script,
 which is an example of how to implement the ``IInteractable`` interface and define specific interaction behavior.
+It exisst only one class in the script, which is ``public class Main_Interact : MonoBehaviour``, and it is responsible for managing the interaction logic, UI elements, and player input for interactable objects in the game.
+The class is a [MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html), which means it can be attached to GameObjects in the Unity scene and will have access to Unity's event methods, such as ``Awake()``, ``Update()``, ``OnTriggerEnter()``, and ``OnTriggerExit()``.
+More information about the class and its functionality can be found in the [Unity Documentation](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) and the [C# Documentation](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/classes).
+In the [Example_Interact.cs](Example_Interact.cs) exist only one class, which is ``public class Example_Interact : MonoBehaviour, IInteractable``, and it is responsible for defining specific interaction behavior for an object in the game.
+More infamtion about the [Example_Interact.cs](Example_Interact.cs) can be found below in the second part of the documentation
 
 
  _***Fourth Part: Serialized Fields and Private Variables***_
 
- Serialized fields and private variables are used to store references to other objects, UI elements, and configuration settings that can be adjusted in the Unity Inspector.
- Serialized fields are variables that can be set in the Unity Inspector, 
- allowing for easy configuration of the script's behavior without modifying the code.
+ [Serialized fields](https://docs.unity3d.com/ScriptReference/SerializeField.html) and [private variables](https://docs.unity3d.com/ScriptReference/SerializeField.html) are used to store references to other objects, UI elements, and configuration settings that can be adjusted in the Unity Inspector.
  In this script, the serialized fields include:
-```charp
+```csharp
     [SerializeField] InputActionAsset playerActionAsset;
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private string interactButtonText = "E";
@@ -216,17 +219,23 @@ which is an example of how to implement the ``IInteractable`` interface and defi
  The private variables are used to store references, below is a description of each private variable:
 
  ``TextMeshProUGUI`` _uiText_, which is a reference to the [TextMeshProUGUI](https://docs.unity3d.com/Packages/com.unity.textmeshpro@3.0/manual/index.html) component that displays the interaction text on the UI.
+
  ``bool`` _isInteracting_, which is a flag that indicates whether the player is currently in range to interact with the object.
+
  ``IInteractable`` _interactable_, which is a reference to the object that implements the IInteractable interface, allowing for specific interaction behavior.
+
  ``InputAction`` _interactAction_, which is a reference to the [InputAction](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/index.html) that detects when the player presses the interact button.
+
  ``bool`` _hasInteracted_, which is a flag that indicates whether the player has already interacted with the object, preventing multiple interactions in quick succession.
 
- More infomation about the private variables and their usage can be found in the [Main_Interact.cs](Main_Interact.cs) script,
- where they are used to manage the interaction logic and UI feedback for the player, or in the next part of the documentation, which describes the methods and their functionality in detail.
+ You can change the serialized fields in the Unity Inspector, but please do not change the private variables, because they are used internally in the script and changing them can cause unexpected behavior or errors.
+ More information about the serialized fields and private variables can be found in the [Unity Documentation](https://docs.unity3d.com/6000.3/Documentation/Manual/InspectorOptions.html) and the [C# Documentation](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/fields).
 
- The Methods will be described in seperate parts, numbered from I to VII, and will be explained in detail, including their purpose, functionality, and how they interact with the serialized fields and private variables.
+ 
 
  ***__Fifth Part: Methods and their functionality__***
+
+ The Methods below will be described in seperate parts, numbered from I to VII, and the functionality of each method will be explained in detail, including the purpose of the method, how it works, and any important considerations or best practices for using it.
 
  ***I: Awake() Method***
 
@@ -271,7 +280,7 @@ which is an example of how to implement the ``IInteractable`` interface and defi
 
    ***II: OnEnable() and OnDisable() Methods***
 
-   ```charp
+   ```csharp
     private void OnEnable()
     {
         interactAction?.Enable();
@@ -281,13 +290,16 @@ which is an example of how to implement the ``IInteractable`` interface and defi
         interactAction?.Disable();
     }
    ```
+   Both methoths are described together, because they are related to each other and are used to enable and disable the input action for player interaction.
    OnEnable() and OnDisable() are Unity event methods that are called when the script is enabled or disabled, respectively.
    That is called when the player enters or exits the interaction range, or when the script is enabled or disabled in the Unity Inspector.
    It is important to enable and disable the input action to ensure that the script only listens for player input when it is active and relevant.
    It prevents unnecessary input processing and potential conflicts with other scripts or systems in the game.
 
+
    ***III: Update() Method***
-   ```charp
+
+   ```csharp
     void Update()
     {
         if (isInteracting)
@@ -309,6 +321,7 @@ which is an example of how to implement the ``IInteractable`` interface and defi
         }
     }
    ```
+
    The [Update()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html) method is called once per frame and is responsible for checking player input and managing the interaction logic.
    Because the script is disabled when the player is not in range, the Update() method will only run when the player is nearby and can interact with the object.
    When the player is in range and the interaction button is pressed, it calls the ``Interact()`` method on the interactable object, also sets the ``hasInteracted`` flag to true,
@@ -318,6 +331,7 @@ which is an example of how to implement the ``IInteractable`` interface and defi
    it hides the UI container to prevent it from being visible during pause. That prevents the UI from being displayed when the game is paused.
 
    ***IV: DisableUIAfterDelay() Coroutine***
+
    ```charp
     private IEnumerator DisableUIAfterDelay(float delay)
     {
@@ -330,7 +344,9 @@ which is an example of how to implement the ``IInteractable`` interface and defi
    This is useful for providing feedback to the player after an interaction, allowing them to see the interaction result before the UI disappears.
    For more information about coroutines, please check the [Unity Documentation](https://docs.unity3d.com/Manual/Coroutines.html) and the [IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerator?view=net-7.0) interface in C#.
 
+
    ****V: OnTriggerEnter() Method**
+
    ```charp
     private void OnTriggerEnter(Collider other)
     {
@@ -386,6 +402,9 @@ which is an example of how to implement the ``IInteractable`` interface and defi
    If the player exits the trigger, it hides the interaction UI with ``uiContainer.SetActive(false)``, resets the ``isInteracting`` and ``hasInteracted`` flags to false, 
    and disables the script with ``this.enabled = false``. 
 
+   ***VII: OnTriggerStay() Method (Optional)***
+
+
    [OnTriggerStay()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerStay.html) is not used in this script, but it could be implemented if continuous checks or updates were needed while the player remains within the trigger area.
    That could be useful for more complex interaction scenarios, such as holding a button to charge an action or providing continuous feedback while the player is in range.
    If you want to implement OnTriggerStay(), you can add the following method to the script:
@@ -400,17 +419,21 @@ which is an example of how to implement the ``IInteractable`` interface and defi
    ```
    You can count the time the player is in the trigger area, and if the player is in the trigger area for a certain time,
    you can call the Interact() method automatically. Or you can implement another method, like OnTriggerStayInteract(),
-   which is called when the player is in the trigger area for a certain time, and then call the Interact() method.
+   which is called when the player is in the trigger area for a certain time,
+   which can for example a DamageOverTimeInteract() method, or a HealOverTimeInteract() method, or any other method that is required for the game.
    if another method is implemented, please use the same naming convention as the Interact() method,
    like OnTriggerStayInteract(), to avoid confusion and for better understanding of the code and use another script, like Example_Interact.cs,
-   to implement the OnTriggerStayInteract() method. In the Interface IInteractable, you can define the OnTriggerStayInteract() method, like this:
+   to implement the OnTriggerStayInteract() method. Please seperate the Interface for the OnTriggerStayInteract() method from the IInteractable interface
+   
    ```charp
-    public interface IInteractable 
+    public interface IInteractableStay 
     {
-        void Interact();
         void OnTriggerStayInteract();
     }
    ```
+   so IInteractableStay.cs interface is used to define a contract for interactable objects that require continuous interaction while the player remains within the trigger area.
+   and IInteractable interface is used to define a contract for interactable objects that require a single interaction when the player presses the interact button.
+   With this separation, it is clear which interface to implement for different interaction scenarios, and it helps to avoid confusion and improve code organization.
    But please note, that the OnTriggerStayInteract() method is not implemented in the Main_Interact.cs script,
    and it is up to the developer to implement it in the Example_Interact.cs script or any other script that implements the IInteractable interface.
    If OnTriggerStayInteract() is implemented, make sure that is also in the Example_Interact.cs script,
