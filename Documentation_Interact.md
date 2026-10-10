@@ -424,33 +424,27 @@ More infamtion about the [Example_Interact.cs](Example_Interact.cs) can be found
    if another method is implemented, please use the same naming convention as the Interact() method,
    like OnTriggerStayInteract(), to avoid confusion and for better understanding of the code and use another script, like Example_Interact.cs,
    to implement the OnTriggerStayInteract() method. Please seperate the Interface for the OnTriggerStayInteract() method from the IInteractable interface
-   
+   like
    ```charp
     public interface IInteractableStay 
     {
         void OnTriggerStayInteract();
     }
    ```
-   so IInteractableStay.cs interface is used to define a contract for interactable objects that require continuous interaction while the player remains within the trigger area.
-   and IInteractable interface is used to define a contract for interactable objects that require a single interaction when the player presses the interact button.
-   With this separation, it is clear which interface to implement for different interaction scenarios, and it helps to avoid confusion and improve code organization.
-   But please note, that the OnTriggerStayInteract() method is not implemented in the Main_Interact.cs script,
-   and it is up to the developer to implement it in the Example_Interact.cs script or any other script that implements the IInteractable interface.
-   If OnTriggerStayInteract() is implemented, make sure that is also in the Example_Interact.cs script,
-   and that the Main_Interact.cs script is modified to call the OnTriggerStayInteract() method when the player is in the trigger area for a certain time.
-   Alternatively, you can implement the OnTriggerStayInteract() method in the Main_Interact.cs script, but that is not recommended, it is recommended to 
-   use another interface for the OnTriggerStayInteract() method, like IInteractableStay.cs, to avoid confusion and for better understanding of the code.
-   Example of IInteractableStay.cs:
-   ```charp
-    public interface IInteractableStay 
+   and write that between 
+   ```csharp
+   public interface IInteractable 
     {
-        void OnTriggerStayInteract();
+    void Interact();           
+
     }
    ```
-   If interface IInteractableStay.cs is implemented, make sure that is also in the Example_Interact.cs script.
-   That will be tested in the next version of the project, and if it works, it will be implemented in the Main_Interact.cs script,
-   and the Example_Interact.cs script will be modified to implement the IInteractableStay.cs interface.
-   
+   and 
+
+   ```csharp
+   public class Main_Interact : MonoBehaviour
+   ``` 
+   for cleaner code.
 
 
    ***2. Overview of the Example_Interact.cs Script***
